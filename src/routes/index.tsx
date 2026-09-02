@@ -1,18 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroBusAsset from "@/assets/karachi-decorated-bus.jpg.asset.json";
-import redBusAsset from "@/assets/red-bus-new.jpg.asset.json";
-import evBusAsset from "@/assets/ev-white-bus.jpg.asset.json";
-import otherBusAsset from "@/assets/karachi-truck-art-bus.jpg.asset.json";
+import heroImg from "@/assets/karachi-decorated-bus.jpg";
+import redBusImg from "@/assets/red-bus-new.jpg";
+import evBusImg from "@/assets/ev-white-bus.jpg";
+import otherBusImg from "@/assets/karachi-truck-art-bus.jpg";
 import brtImg from "@/assets/brt-bus.jpg";
-import localBusAsset from "@/assets/local-bus-karachi.webp.asset.json";
-import doubleDeckerAsset from "@/assets/double-decker-bus.png.asset.json";
-
-const heroImg = heroBusAsset.url;
-const redBusImg = redBusAsset.url;
-const localBusImg = localBusAsset.url;
-const doubleDeckerImg = doubleDeckerAsset.url;
-const evBusImg = evBusAsset.url;
-const otherBusImg = otherBusAsset.url;
+import localBusImg from "@/assets/local-bus-karachi.webp";
+import doubleDeckerImg from "@/assets/double-decker-bus.png";
 import { SearchPanel } from "@/components/search-panel";
 import { ROUTES, AREAS, CATEGORY_META, CATEGORY_ORDER } from "@/data/routes";
 
