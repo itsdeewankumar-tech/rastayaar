@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroImg from "@/assets/karachi-decorated-bus.jpg";
-import redBusImg from "@/assets/red-bus-new.jpg";
+import redBusImg from "@/assets/red-bus.jpg";
 import evBusImg from "@/assets/ev-white-bus.jpg";
 import otherBusImg from "@/assets/karachi-truck-art-bus.jpg";
 import brtImg from "@/assets/brt-bus.jpg";
