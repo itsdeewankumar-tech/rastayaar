@@ -1,0 +1,162 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * RastaYaar design system — Karachi public transport.
+ * Petrol teal + saffron, warm sand paper background, truck-art energy.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-cat-mini: var(--cat-mini);
+  --color-cat-coach: var(--cat-coach);
+  --color-cat-named: var(--cat-named);
+  --color-cat-other: var(--cat-other);
+  --color-cat-red: var(--cat-red);
+  --color-cat-ev: var(--cat-ev);
+  --color-cat-brt: var(--cat-brt);
+  --color-cat-double-decker: var(--cat-double-decker);
+  --shadow-card: 0 1px 2px oklch(0.25 0.05 200 / 0.06), 0 8px 24px oklch(0.25 0.05 200 / 0.08);
+  --shadow-lift: 0 2px 6px oklch(0.25 0.05 200 / 0.08), 0 18px 40px oklch(0.25 0.05 200 / 0.14);
+}
+
+:root {
+  --radius: 0.85rem;
+  --background: oklch(0.98 0.012 92);
+  --foreground: oklch(0.22 0.03 210);
+  --ink: oklch(0.17 0.035 205);
+  --surface: oklch(0.995 0.006 92);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.03 210);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.03 210);
+  --primary: oklch(0.44 0.088 197);
+  --primary-foreground: oklch(0.99 0.008 92);
+  --secondary: oklch(0.94 0.02 190);
+  --secondary-foreground: oklch(0.3 0.05 200);
+  --muted: oklch(0.95 0.014 92);
+  --muted-foreground: oklch(0.5 0.02 205);
+  --accent: oklch(0.72 0.16 62);
+  --accent-foreground: oklch(0.2 0.04 60);
+  --destructive: oklch(0.55 0.2 27);
+  --destructive-foreground: oklch(0.99 0.005 92);
+  --border: oklch(0.9 0.017 195);
+  --input: oklch(0.9 0.017 195);
+  --ring: oklch(0.55 0.1 197);
+
+  --cat-mini: oklch(0.55 0.13 250);
+  --cat-coach: oklch(0.52 0.12 300);
+  --cat-named: oklch(0.55 0.1 160);
+  --cat-other: oklch(0.5 0.05 210);
+  --cat-red: oklch(0.55 0.2 27);
+  --cat-ev: oklch(0.48 0.14 148);
+  --cat-brt: oklch(0.63 0.18 48);
+  --cat-double-decker: oklch(0.58 0.17 32);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    background-image:
+      radial-gradient(circle at 12% -5%, oklch(0.72 0.16 62 / 0.1), transparent 45%),
+      radial-gradient(circle at 92% 0%, oklch(0.44 0.088 197 / 0.12), transparent 42%);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 76rem;
+  padding-inline: 1.25rem;
+}
+
+@utility surface-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+@utility hover-lift {
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in oklch, var(--color-primary) 40%, transparent);
+  }
+}
+
+@utility truck-stripe {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-accent) 0 10px,
+    var(--color-primary) 10px 20px,
+    var(--color-cat-red) 20px 30px,
+    var(--color-cat-ev) 30px 40px
+  );
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-rise {
+  animation: rise-in 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
