@@ -3,7 +3,7 @@ import { Bus, MapPin, Route as RouteIcon, Wallet, Search, Users } from "lucide-r
 import heroImg from "@/assets/karachi-decorated-bus.jpg";
 import localBusImg from "@/assets/local-bus-karachi.webp";
 import doubleDeckerImg from "@/assets/double-decker-bus.png";
-import redBusImg from "@/assets/red-bus.jpg";
+import redBusImg from "@/assets/red-bus-new.jpg";
 import evBusImg from "@/assets/ev-white-bus.jpg";
 import otherBusImg from "@/assets/karachi-truck-art-bus.jpg";
 import brtImg from "@/assets/brt-bus.jpg";
