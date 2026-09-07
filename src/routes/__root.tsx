@@ -77,16 +77,16 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-  meta: [
-  { charSet: "utf-8" },
-  { name: "viewport", content: "width=device-width, initial-scale=1" },
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
 
-  {
-    name: "google-site-verification",
-    content: "<meta name="google-site-verification" content="leg5CZ0EEN2Fos2z0XcnI5T6-EK3KBfoc2GV6Ovqwao" />",
-  },
+      {
+        name: "google-site-verification",
+        content: "leg5CZ0EEN2Fos2z0XcnI5T6-EK3KBfoc2GV6Ovqwao",
+      },
 
-  { title: "RastaYaar — Karachi Public Transport, Bus Routes & Stops" },
+      { title: "RastaYaar — Karachi Public Transport, Bus Routes & Stops" },
       {
         name: "description",
         content:
