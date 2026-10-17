@@ -172,3 +172,17 @@ open it up for outside contributions.
 ## Contact
 
 Questions, corrections, or feedback: **rastayaar@gmail.com**
+
+
+## Imported Karachi bus route records
+
+The route dataset includes additional legacy route records supplied by the project owner in October 2026. Where the supplied file repeated a route code with a different stop list, the extra entry is labeled `source variant`. These records have not been independently checked for current operation, stop order, fares, or GPS coordinates. Treat them as community-provided reference data until verified with operators or field observations.
+
+
+## Route planning and SEO updates
+
+- The local trip planner now searches direct journeys and connected journeys using up to three bus legs (up to two changes). Results remain based on saved route records; they are not live service verification.
+- If no saved route connection is found, the planner provides Google Maps Transit and web-search fallbacks. Embedded Google Maps directions require a restricted Maps Embed API key in `VITE_GOOGLE_MAPS_EMBED_API_KEY`.
+- Privacy Policy and Route Data Disclaimer pages are available at `/privacy` and `/disclaimer`. Review their wording against the actual analytics, map and advertising services before launch.
+- SEO and monetization preparation notes are in `SEO-ADSENSE-PLAN.md`.
+- After the production domain is live, generate an XML sitemap with `SITE_URL=https://your-real-domain.com npm run seo:sitemap` (PowerShell: `$env:SITE_URL="https://your-real-domain.com"; npm run seo:sitemap`). The command writes `public/sitemap.xml` and adds the absolute sitemap URL to `public/robots.txt`. Replace the example domain with your real domain; do not deploy a sitemap for a placeholder domain.

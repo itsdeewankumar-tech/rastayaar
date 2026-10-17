@@ -12,10 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaresRouteImport } from './routes/fares'
 import { Route as PlanRouteImport } from './routes/plan'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as RoutesIndexRouteImport } from './routes/routes.index'
 import { Route as RoutesSlugRouteImport } from './routes/routes.$slug'
 
@@ -34,6 +38,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaresRoute = FaresRouteImport.update({
   id: '/fares',
   path: '/fares',
@@ -44,6 +53,11 @@ const PlanRoute = PlanRouteImport.update({
   path: '/plan',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreasIndexRoute = AreasIndexRouteImport.update({
   id: '/areas/',
   path: '/areas/',
@@ -52,6 +66,16 @@ const AreasIndexRoute = AreasIndexRouteImport.update({
 const AreasSlugRoute = AreasSlugRouteImport.update({
   id: '/areas/$slug',
   path: '/areas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoutesIndexRoute = RoutesIndexRouteImport.update({
@@ -69,22 +93,30 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/fares': typeof FaresRoute
   '/plan': typeof PlanRoute
+  '/privacy': typeof PrivacyRoute
   '/areas/$slug': typeof AreasSlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
   '/areas/': typeof AreasIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/fares': typeof FaresRoute
   '/plan': typeof PlanRoute
+  '/privacy': typeof PrivacyRoute
   '/areas/$slug': typeof AreasSlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
   '/areas': typeof AreasIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/routes': typeof RoutesIndexRoute
 }
 export interface FileRoutesById {
@@ -92,11 +124,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/fares': typeof FaresRoute
   '/plan': typeof PlanRoute
+  '/privacy': typeof PrivacyRoute
   '/areas/$slug': typeof AreasSlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
   '/areas/': typeof AreasIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/routes/': typeof RoutesIndexRoute
 }
 export interface FileRouteTypes {
@@ -105,33 +141,45 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/disclaimer'
     | '/fares'
     | '/plan'
+    | '/privacy'
     | '/areas/$slug'
+    | '/blog/$slug'
     | '/routes/$slug'
     | '/areas/'
+    | '/blog/'
     | '/routes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
+    | '/disclaimer'
     | '/fares'
     | '/plan'
+    | '/privacy'
     | '/areas/$slug'
+    | '/blog/$slug'
     | '/routes/$slug'
     | '/areas'
+    | '/blog'
     | '/routes'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
+    | '/disclaimer'
     | '/fares'
     | '/plan'
+    | '/privacy'
     | '/areas/$slug'
+    | '/blog/$slug'
     | '/routes/$slug'
     | '/areas/'
+    | '/blog/'
     | '/routes/'
   fileRoutesById: FileRoutesById
 }
@@ -139,11 +187,15 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  DisclaimerRoute: typeof DisclaimerRoute
   FaresRoute: typeof FaresRoute
   PlanRoute: typeof PlanRoute
+  PrivacyRoute: typeof PrivacyRoute
   AreasSlugRoute: typeof AreasSlugRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   RoutesSlugRoute: typeof RoutesSlugRoute
   AreasIndexRoute: typeof AreasIndexRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   RoutesIndexRoute: typeof RoutesIndexRoute
 }
 
@@ -170,6 +222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fares': {
       id: '/fares'
       path: '/fares'
@@ -184,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlanRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/areas/': {
       id: '/areas/'
       path: '/areas'
@@ -196,6 +262,20 @@ declare module '@tanstack/react-router' {
       path: '/areas/$slug'
       fullPath: '/areas/$slug'
       preLoaderRoute: typeof AreasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/routes/': {
@@ -219,11 +299,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  DisclaimerRoute: DisclaimerRoute,
   FaresRoute: FaresRoute,
   PlanRoute: PlanRoute,
+  PrivacyRoute: PrivacyRoute,
   AreasSlugRoute: AreasSlugRoute,
+  BlogSlugRoute: BlogSlugRoute,
   RoutesSlugRoute: RoutesSlugRoute,
   AreasIndexRoute: AreasIndexRoute,
+  BlogIndexRoute: BlogIndexRoute,
   RoutesIndexRoute: RoutesIndexRoute,
 }
 export const routeTree = rootRouteImport

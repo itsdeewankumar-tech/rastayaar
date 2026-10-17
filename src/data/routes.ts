@@ -156,7 +156,7 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
     code: "N-5",
     category: "mini_bus",
     stops:
-      "Naval Colony · Fareed Colony · Urdu Chowk · Orangi 4,5 · Metro · Banaras · Valika · Habib Bank · Ghani Chorangi · Sher Shah · Gulbai · Sultanabad · Tower · PIDC · Cantt Station · Jinnah Hospital · Kala Pul · Defence Mor · Akhtar Colony · Qayoomabad · Godam Chorangi · Chamra Chorangi · Veta Chorangi · Bilal Colony",
+      "Naval Colony · Fareed Colony · Urdu Chowk · Orangi 4,5 · Metro · Banaras · Valika · Habib Bank · Ghani Chorangi · Sher Shah · Gulbai · Sultanabad · Tower · Shaheen Complex · PIDC · Cantt Station · Jinnah Hospital · Kala Pul · Defence Mor · Akhtar Colony · Qayoomabad · Godam Chorangi · Chamra Chorangi · Veta Chorangi · Bilal Colony",
   },
   {
     code: "SL",
@@ -242,7 +242,7 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
     code: "Muslim",
     category: "named_route",
     stops:
-      "Steel Town · Pipri · Shah Latif Town · Quaidabad · Malir 15 · Malir Halt · Airport · Drigh Road · Karsaz · Baloch Pul · Nursery · Gora Qabristan · Regent Plaza · Jinnah Hospital · Cantt Station · PIDC · Light House · City Court · Boulton Market · Tower · Shereen Jinnah Colony",
+      "Steel Town · Pipri · FAST University · Shah Latif Town · Quaidabad · Malir 15 · Malir Halt · Airport · Drigh Road · Karsaz · Baloch Pul · Nursery · Gora Qabristan · Regent Plaza · Jinnah Hospital · Cantt Station · PIDC · Light House · City Court · Boulton Market · Tower · Shereen Jinnah Colony",
   },
   {
     code: "New Afridi",
@@ -423,7 +423,7 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
     code: "R-11",
     category: "red_bus",
     stops:
-      "Miran Nakka · Gulistan Colony · Bihar Colony · Agra Taj · Daryabad · Jinnah Bridge · Bahria Complex · MT Khan Road · PICD · Submarine Chowk · Bahria Complex 3 · Khadda Market · Abdullah Shah Ghazi · Bilawal Chorangi · Ziauddin Hospital · Shereen Jinnah Colony",
+      "Sultanabad · Miran Nakka · Gulistan Colony · Bihar Colony · Agra Taj · Daryabad · Jinnah Bridge · Bahria Complex · MT Khan Road · PICD · Submarine Chowk · Bahria Complex 3 · Khadda Market · Abdullah Shah Ghazi · Bilawal Chorangi · Ziauddin Hospital · Shereen Jinnah Colony",
   },
   {
     code: "R-12",
@@ -496,6 +496,7 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
     stops:
       "Model Colony · Malir Halt · Colony Gate · Nata Khan Bridge · Drigh Road Station · PAF Base Faisal · Laal Kothi · Karsaz · Nursery · FTC · Regent Plaza · Metropole · Fawwara Chowk · Arts Council · Shaheen Complex · I.I. Chundrigar · Tower",
   },
+
 ];
 
 export const ROUTES: BusRoute[] = raw.map((r) => ({

@@ -9,11 +9,18 @@ import {
 } from "@/data/routes";
 import { RouteCard } from "@/components/site-chrome";
 
-type Search = { type?: RouteCategory };
+type Search = { type?: RouteCategory | "local_bus" };
+
+const LOCAL_BUS_CATEGORIES: RouteCategory[] = [
+  "mini_bus",
+  "coach",
+  "named_route",
+];
 
 export const Route = createFileRoute("/routes/")({
   validateSearch: (search: Record<string, unknown>): Search => {
     const t = search["type"];
+    if (t === "local_bus") return { type: "local_bus" };
     return typeof t === "string" && (CATEGORY_ORDER as string[]).includes(t)
       ? { type: t as RouteCategory }
       : {};
@@ -41,7 +48,12 @@ function RoutesIndex() {
   const [q, setQ] = useState("");
 
   const list = useMemo(() => {
-    let items = type ? ROUTES.filter((r) => r.category === type) : ROUTES;
+    let items = !type
+      ? ROUTES
+      : type === "local_bus"
+        ? ROUTES.filter((r) => LOCAL_BUS_CATEGORIES.includes(r.category))
+        : ROUTES.filter((r) => r.category === type);
+
     if (q.trim()) {
       items = items
         .map((r) => ({
@@ -58,11 +70,19 @@ function RoutesIndex() {
     return items;
   }, [type, q]);
 
+  const selectedLabel = type === "local_bus"
+    ? "Local Bus (Mini Bus & Coach)"
+    : type
+      ? CATEGORY_META[type].label
+      : "All bus routes";
+
   return (
     <div className="container-page py-12">
-      <h1 className="font-display text-4xl font-bold text-ink">All bus routes</h1>
+      <h1 className="font-display text-4xl font-bold text-ink">{selectedLabel}</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
-        {ROUTES.length} routes across mini buses, coaches, named fleets, Red Bus, EV Bus and BRT.
+        {type === "local_bus"
+          ? `${list.length} routes across mini buses, coaches, and named fleets.`
+          : `${ROUTES.length} routes across mini buses, coaches, named fleets, Red Bus, EV Bus and BRT.`}
       </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
@@ -75,7 +95,16 @@ function RoutesIndex() {
         >
           All
         </Link>
-        {CATEGORY_ORDER.map((c) => (
+        <Link
+          to="/routes"
+          search={{ type: "local_bus" }}
+          className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+            type === "local_bus" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-surface hover:border-primary"
+          }`}
+        >
+          Local Bus (Mini Bus & Coach)
+        </Link>
+        {CATEGORY_ORDER.filter((c) => !LOCAL_BUS_CATEGORIES.includes(c)).map((c) => (
           <Link
             key={c}
             to="/routes"

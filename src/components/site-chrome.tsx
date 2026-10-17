@@ -6,11 +6,14 @@ import logoUrl from "@/assets/rastayaar-logo-v2.png";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/plan", label: "Plan Trip" },
-  { to: "/routes", label: "Routes" },
+  { to: "/routes", label: "Bus Routes" },
   { to: "/areas", label: "Areas" },
+  { to: "/blog/", label: "Blogs" },
   { to: "/fares", label: "Fares" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  { to: "/about", label: "About Us" },
+  { to: "/contact", label: "Contact Us" },
+  { to: "/privacy", label: "Privacy Policy" },
+  { to: "/disclaimer", label: "Route Disclaimer" },
 ] as const;
 
 export function SiteHeader() {
@@ -22,6 +25,10 @@ export function SiteHeader() {
           <img
             src={logoUrl}
             alt="RastaYaar — Karachi public transport route finder"
+            title="RastaYaar logo"
+            width={240}
+            height={80}
+            loading="eager"
             className="h-11 w-auto"
           />
           <span className="sr-only">RastaYaar — Karachi Transport</span>
@@ -89,10 +96,14 @@ export function SiteFooter() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-border py-4 text-center text-xs text-muted-foreground">
-        Karachi Public Transport Route Guide · For public information only
-      </div>
-    </footer>
+
+<div className="border-t border-border py-4 text-center text-xs text-muted-foreground">
+  <p>For public information only. Route details and fares may change.</p>
+  <p>© 2026 RastaYaar. All rights reserved.</p>
+  <p className="mt-1"><Link to="/privacy" className="underline underline-offset-2">Privacy Policy</Link> · <Link to="/disclaimer" className="underline underline-offset-2">Route data disclaimer</Link></p>
+</div>
+</footer>
+
   );
 }
 
