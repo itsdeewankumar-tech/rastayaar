@@ -1,13 +1,17 @@
+import { AnimatedStat } from "@/components/animated-stat";
+import { useLanguage } from "@/components/language";
+import { FounderCredit } from "@/components/site-chrome";
+import { T } from "@/components/language";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bus, MapPin, Route as RouteIcon, Wallet, Search, Users } from "lucide-react";
 import heroImg from "@/assets/karachi-decorated-bus.jpg";
 import localBusImg from "@/assets/local-bus-karachi.webp";
-import doubleDeckerImg from "@/assets/double-decker-bus.png";
-import redBusImg from "@/assets/red-bus-new.jpg";
+import doubleDeckerImg from "@/assets/double-decker-photo.jpg";
+import redBusImg from "@/assets/red-bus-photo.jpg";
 import evBusImg from "@/assets/ev-white-bus.jpg";
 import otherBusImg from "@/assets/karachi-truck-art-bus.jpg";
 import brtImg from "@/assets/brt-bus.jpg";
-import { ROUTES, AREAS } from "@/data/routes";
+import { ROUTES, AREAS, CATEGORY_ORDER } from "@/data/routes";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -44,7 +48,7 @@ const VALUES = [
   {
     icon: Wallet,
     title: "Honest fare ranges",
-    body: "Local mini bus and coach Estimated Rs. 20 – 200, EV Bus and Double Decker Estimated Rs. 80, Red Bus Estimated Rs. 80 – 120 — so nobody overcharges you.",
+    body: "Local mini bus and coach Estimated Rs. 30 – 150, EV Bus and Double Decker Estimated Rs. 80, Red Bus Estimated Rs. 80 – 120 — so nobody overcharges you.",
   },
   {
     icon: Users,
@@ -63,8 +67,9 @@ const GALLERY = [
 ];
 
 function About() {
+  const { t } = useLanguage();
   return (
-    <div>
+    <div className="readable-page">
       <section className="relative overflow-hidden">
         <img
           src={heroImg}
@@ -76,14 +81,20 @@ function About() {
         <div className="absolute inset-0 bg-gradient-to-r from-ink/92 via-ink/78 to-ink/40" />
         <div className="container-page relative py-20 md:py-24">
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/50 bg-accent/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            About the RastaYaar
+            {""}
+            <T>{"About the RastaYaar"}</T>{" "}
           </span>
-          <h1 className="mt-5 max-w-3xl font-display text-4xl font-bold leading-tight text-primary-foreground sm:text-5xl">
-            Karachi moves on buses. Now the map moves with you.
+          <h1 className="mt-5 max-w-5xl font-display text-4xl font-bold leading-tight text-primary-foreground sm:text-5xl lg:text-6xl">
+            {""}
+            <T>{"Karachi moves on buses. Now the map moves with you."}</T>{" "}
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-primary-foreground/80">
-            RastaYaar collects the city's scattered route knowledge — the kind you usually get by
-            asking a conductor — into one searchable guide covering every service in the city.
+          <p className="about-introduction mt-5 max-w-3xl text-lg leading-relaxed text-primary-foreground/90">
+            {""}
+            <T>
+              {
+                "RastaYaar collects the city's scattered route knowledge — the kind you usually get by asking a conductor — into one searchable guide covering every service in the city."
+              }
+            </T>{" "}
           </p>
         </div>
       </section>
@@ -92,35 +103,61 @@ function About() {
         {[
           { n: ROUTES.length, l: "Routes mapped" },
           { n: AREAS.length, l: "Stops & areas" },
-          { n: 8, l: "Fleet types" },
-          { n: "Est. 20–200", l: "Local fare (Rs.)" },
+          { n: CATEGORY_ORDER.length, l: "Fleet types" },
+          { n: "Est. 30–150", l: "Local fare (Rs.)" },
         ].map((s) => (
           <div key={s.l} className="surface-card px-4 py-5 text-center">
-            <p className="font-display text-2xl font-bold text-primary">{s.n}</p>
-            <p className="mt-1 text-xs text-muted-foreground">{s.l}</p>
+            <p className="about-stat-number font-display font-bold text-primary">
+              <AnimatedStat value={s.n} />
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{t(s.l)}</p>
           </div>
         ))}
       </section>
 
       <section className="container-page mt-20 grid gap-10 md:grid-cols-[1.15fr_1fr] md:items-center">
         <div className="space-y-4 text-muted-foreground">
-          <h2 className="font-display text-3xl font-bold text-ink">Why RastaYaar exists</h2>
+          <h2 className="font-display text-3xl font-bold text-ink">
+            {""}
+            <T>{"Why RastaYaar exists"}</T>
+            {""}
+          </h2>
           <p>
-            There has never been a single, simple place to check which bus goes where in Karachi.
-            Route boards are hand-painted, numbers change, and the only reliable source has always
-            been word of mouth. RastaYaar turns that shared knowledge into something you can search
-            in seconds.
+            {""}
+            <T>
+              {
+                "There has never been a single, simple place to check which bus goes where in Karachi. Route boards are hand-painted, numbers change, and the only reliable source has always been word of mouth. RastaYaar turns that shared knowledge into something you can search in seconds."
+              }
+            </T>{" "}
           </p>
           <p>
-            Coverage includes mini buses, coach buses, named fleet routes (Mashriq, Muslim, Marwat,
-            Bilal and more), Red Bus (Peoples Bus Service), Double Decker Bus, EV buses, and the BRT
-            Green and Orange Lines — <strong className="text-ink">{ROUTES.length} routes</strong>{" "}
-            across <strong className="text-ink">{AREAS.length} stops and areas</strong>.
+            {""}
+            <T>
+              {
+                "Coverage includes mini buses, coach buses, named fleet routes (Mashriq, Muslim, Marwat, Bilal and more), Red Bus (Peoples Bus Service), Double Decker Bus, EV buses, and the BRT Green and Orange Lines —"
+              }
+            </T>{" "}
+            <strong className="text-ink">
+              {ROUTES.length} {""}
+              <T>{"routes"}</T>
+              {""}
+            </strong>{" "}
+            {""}
+            <T>{"across"}</T>{" "}
+            <strong className="text-ink">
+              {AREAS.length} {""}
+              <T>{"stops and areas"}</T>
+              {""}
+            </strong>
+            .
           </p>
           <p>
-            The trip planner goes one step further: pick where you are and where you're going, and
-            it works out the direct bus — or the single transfer that gets you there — with the fare
-            you should expect for the whole journey.
+            {""}
+            <T>
+              {
+                "The trip planner goes one step further: pick where you are and where you're going, and it works out the direct bus — or the single transfer that gets you there — with the fare you should expect for the whole journey."
+              }
+            </T>{" "}
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link
@@ -128,13 +165,15 @@ function About() {
               search={{}}
               className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
             >
-              Browse all routes
+              {""}
+              <T>{"Browse all routes"}</T>{" "}
             </Link>
             <Link
               to="/plan"
               className="rounded-full border border-border px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-secondary"
             >
-              Plan a trip
+              {""}
+              <T>{"Plan a trip"}</T>{" "}
             </Link>
           </div>
         </div>
@@ -149,16 +188,20 @@ function About() {
       </section>
 
       <section className="container-page mt-20">
-        <h2 className="font-display text-3xl font-bold text-ink">What you get</h2>
+        <h2 className="font-display text-3xl font-bold text-ink">
+          {""}
+          <T>{"What you get"}</T>
+          {""}
+        </h2>
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {VALUES.map((v) => (
-            <article key={v.title} className="surface-card hover-lift flex gap-4 p-5">
+            <article key={t(v.title)} className="surface-card hover-lift flex gap-4 p-5">
               <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary">
                 <v.icon className="size-5" />
               </span>
               <div>
-                <h3 className="font-display text-lg font-semibold text-ink">{v.title}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{v.body}</p>
+                <h3 className="font-display text-lg font-semibold text-ink">{t(v.title)}</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{t(v.body)}</p>
               </div>
             </article>
           ))}
@@ -166,16 +209,25 @@ function About() {
       </section>
 
       <section className="container-page mt-20">
-        <h2 className="font-display text-3xl font-bold text-ink">Every service in the city</h2>
+        <h2 className="font-display text-3xl font-bold text-ink">
+          {""}
+          <T>{"Every service in the city"}</T>
+          {""}
+        </h2>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          From hand-painted truck-art mini buses to double decker and air-conditioned rapid transit.
+          {""}
+          <T>
+            {
+              "From hand-painted truck-art mini buses to double decker and air-conditioned rapid transit."
+            }
+          </T>{" "}
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {GALLERY.map((g) => (
-            <figure key={g.label} className="surface-card hover-lift overflow-hidden">
+            <figure key={t(g.label)} className="surface-card hover-lift overflow-hidden">
               <img
                 src={g.img}
-                alt={g.label}
+                alt={t(g.label)}
                 loading="lazy"
                 width={1024}
                 height={768}
@@ -183,7 +235,7 @@ function About() {
               />
               <figcaption className="flex items-center gap-2 p-3 text-sm text-muted-foreground">
                 <Bus className="size-4 text-primary" />
-                {g.label}
+                {t(g.label)}
               </figcaption>
             </figure>
           ))}
@@ -194,18 +246,23 @@ function About() {
         <div className="surface-card flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-start gap-3 text-xs text-muted-foreground sm:max-w-2xl">
             <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-            Route data is compiled from the Karachi Public Transport Route Guide and community
-            input, for public information only. Timings, routes and fares can change without notice
-            — please verify with the conductor before travelling.
+            {""}
+            <T>
+              {
+                "Route data is compiled from the Karachi Public Transport Route Guide and community input, for public information only. Timings, routes and fares can change without notice — please verify with the conductor before travelling."
+              }
+            </T>{" "}
           </p>
           <Link
             to="/contact"
             className="shrink-0 rounded-full bg-accent px-5 py-2.5 text-center text-sm font-semibold text-accent-foreground transition-transform hover:-translate-y-0.5"
           >
-            Report a correction
+            {""}
+            <T>{"Report a correction"}</T>{" "}
           </Link>
         </div>
       </section>
+      <FounderCredit />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { useLanguage } from "./language";
 import { useMemo, useRef, useState } from "react";
 import { AREAS, scoreMatch } from "@/data/routes";
 
@@ -14,6 +15,7 @@ export function AreaPicker({
   onChange: (v: string) => void;
   placeholder: string;
 }) {
+  const { t, place } = useLanguage();
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);
   const blurTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -33,7 +35,7 @@ export function AreaPicker({
         htmlFor={id}
         className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
       >
-        {label}
+        {t(label)}
       </label>
       <input
         id={id}
@@ -47,7 +49,7 @@ export function AreaPicker({
         onBlur={() => {
           blurTimer.current = setTimeout(() => setOpen(false), 140);
         }}
-        placeholder={placeholder}
+        placeholder={t(placeholder)}
         autoComplete="off"
         className="mt-1 w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-ring/30"
       />
@@ -66,8 +68,10 @@ export function AreaPicker({
                 }}
                 className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-secondary"
               >
-                <span>{a.name}</span>
-                <span className="text-xs text-muted-foreground">{a.routes.length} buses</span>
+                <span>{place(a.name)}</span>
+                <span className="text-xs text-muted-foreground">
+                  {a.routes.length} {t("buses")}
+                </span>
               </button>
             </li>
           ))}

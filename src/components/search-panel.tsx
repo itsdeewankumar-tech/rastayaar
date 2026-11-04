@@ -1,9 +1,13 @@
+import { T } from "@/components/language";
+import { ExternalSearch } from "./external-search";
+import { useLanguage } from "./language";
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ROUTES, AREAS, CATEGORY_META, POPULAR_AREAS, scoreMatch, slugify } from "@/data/routes";
 import { CategoryBadge } from "@/components/site-chrome";
 
 export function SearchPanel() {
+  const { t, place, language } = useLanguage();
   const [query, setQuery] = useState("");
 
   const areaResults = useMemo(() => {
@@ -26,11 +30,12 @@ export function SearchPanel() {
   const empty = hasQuery && areaResults.length === 0 && routeResults.length === 0;
 
   return (
-    <div className="surface-card p-4 sm:p-5">
+    <div className="surface-card p-5">
       <label htmlFor="area-search" className="sr-only">
-        Search a Karachi area or bus number
+        {""}
+        <T>{"Search a Karachi area or bus number"}</T>{" "}
       </label>
-      <div className="flex items-center gap-3 rounded-xl border border-border bg-muted/60 px-4 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-ring/30">
+      <div className="flex min-h-12 items-center gap-3 rounded-xl border border-border bg-muted/60 px-4 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-ring/30">
         <svg
           aria-hidden="true"
           viewBox="0 0 24 24"
@@ -46,8 +51,8 @@ export function SearchPanel() {
           id="area-search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Type an area — e.g. Sultanabad, Nagan Chorangi, Tower…"
-          className="w-full bg-transparent text-base outline-none placeholder:text-muted-foreground"
+          placeholder={t("Type an area — e.g. Sultanabad, Nagan Chorangi, Tower…")}
+          className="min-w-0 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           autoComplete="off"
         />
         {hasQuery && (
@@ -55,7 +60,8 @@ export function SearchPanel() {
             onClick={() => setQuery("")}
             className="rounded-full px-2 py-0.5 text-xs font-semibold text-muted-foreground hover:bg-secondary"
           >
-            Clear
+            {""}
+            <T>{"Clear"}</T>{" "}
           </button>
         )}
       </div>
@@ -63,17 +69,18 @@ export function SearchPanel() {
       {!hasQuery && (
         <div className="mt-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Popular areas
+            {""}
+            <T>{"Popular areas"}</T>{" "}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {POPULAR_AREAS.map((a) => (
               <Link
-                key={a}
+                key={place(a)}
                 to="/areas/$slug"
                 params={{ slug: slugify(a) }}
                 className="rounded-full border border-border bg-surface px-3 py-1.5 text-sm transition-colors hover:border-primary hover:text-primary"
               >
-                {a}
+                {place(a)}
               </Link>
             ))}
           </div>
@@ -82,14 +89,22 @@ export function SearchPanel() {
 
       {empty && (
         <p className="mt-4 text-sm text-muted-foreground">
-          No area or bus matched “{query}”. Try a nearby landmark or a shorter spelling.
+          {""}
+          <T>{"No area or bus matched “"}</T>
+          {""}
+          {query}
+          {""}
+          <T>{"”. Try a nearby landmark or a shorter spelling."}</T>{" "}
         </p>
       )}
+
+      {empty && <ExternalSearch key={query + language} query={query} />}
 
       {routeResults.length > 0 && (
         <div className="mt-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            Bus numbers
+            {""}
+            <T>{"Bus numbers"}</T>{" "}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {routeResults.map(({ route }) => (
@@ -117,9 +132,12 @@ export function SearchPanel() {
                 className="block rounded-xl border border-border bg-surface p-3.5 transition-colors hover:border-primary"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <span className="font-display font-semibold text-ink">{area.name}</span>
+                  <span className="font-display font-semibold text-ink">{place(area.name)}</span>
                   <span className="text-xs text-muted-foreground">
-                    {area.routes.length} bus{area.routes.length === 1 ? "" : "es"}
+                    {area.routes.length} {""}
+                    <T>{"bus"}</T>
+                    {""}
+                    {area.routes.length === 1 ? "" : "es"}
                   </span>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1.5">
@@ -134,7 +152,8 @@ export function SearchPanel() {
                   ))}
                   {area.routes.length > 10 && (
                     <span className="text-[11px] text-muted-foreground">
-                      +{area.routes.length - 10} more
+                      +{area.routes.length - 10} {""}
+                      <T>{"more"}</T>{" "}
                     </span>
                   )}
                 </div>

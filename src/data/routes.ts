@@ -1,17 +1,35 @@
+import { canonicalPlace } from "./places";
 export type RouteCategory =
-  "mini_bus" | "named_route" | "other" | "coach" | "red_bus" | "ev_bus" | "brt" | "double_decker";
+  | "mini_bus"
+  | "named_route"
+  | "other"
+  | "coach"
+  | "red_bus"
+  | "ev_bus"
+  | "brt"
+  | "double_decker"
+  | "pink_bus";
 
 export interface BusRoute {
   code: string;
   slug: string;
   category: RouteCategory;
   stops: string[];
+  dataNote?: string | undefined;
+  planningEnabled?: boolean;
+  bidirectional?: boolean;
 }
 
 export const CATEGORY_META: Record<
   RouteCategory,
   { label: string; short: string; fare: string; token: string }
 > = {
+  pink_bus: {
+    label: "Pink Bus (Women-only)",
+    short: "Pink Bus",
+    fare: "Estimated Rs. 80 – 120",
+    token: "cat-pink",
+  },
   mini_bus: { label: "Mini Bus", short: "Mini", fare: "Estimated Rs. 30 – 150", token: "cat-mini" },
   coach: { label: "Coach Bus", short: "Coach", fare: "Estimated Rs. 30 – 150", token: "cat-coach" },
   named_route: {
@@ -46,6 +64,7 @@ export const CATEGORY_ORDER: RouteCategory[] = [
   "ev_bus",
   "brt",
   "double_decker",
+  "pink_bus",
 ];
 
 const s = (t: string) =>
@@ -102,7 +121,7 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
     code: "F-11",
     category: "mini_bus",
     stops:
-      "Bhens Colony · Gul Ahmed · Dawood Chorangi · Landhi 1 · Korangi · No.6 · 5½ · 5 · 3 · 1 · Crossing · Qayoomabad · Akhtar Colony · Defence Mor · Kala Pul · Gora Qabristan · Nursery · Tariq Road · Jail Chorangi · Askari Park · Hasan Square · Urdu College · NIPA Chorangi · Gulshan Chorangi · Fazal Mil/Lucky One · KMC Cardio Hospital · Water Pump · Gulberg · Piyala Hotel · Peoples Chorangi · DC Office · Sakhi Hasan · Qalandaria Chowk · Nusrat Bhutto Colony · Mianwali Colony · Naya Nazimabad · Pakhtunabad · Garam Chashma · Chungi Stop",
+      "Bhens Colony · Gul Ahmed · Dawood Chorangi · Landhi 1 · Korangi · Korangi 6 · 5½ · 5 · 3 · 1 · Crossing · Qayoomabad · Akhtar Colony · Defence Mor · Kala Pul · Gora Qabristan · Nursery · Tariq Road · Jail Chorangi · Askari Park · Hasan Square · Urdu College · NIPA Chorangi · Gulshan Chorangi · Fazal Mil/Lucky One · KMC Cardio Hospital · Water Pump · Gulberg · Piyala Hotel · Peoples Chorangi · DC Office · Sakhi Hasan · Qalandaria Chowk · Nusrat Bhutto Colony · Mianwali Colony · Naya Nazimabad · Pakhtunabad · Garam Chashma · Chungi Stop",
   },
   {
     code: "G-3",
@@ -263,10 +282,10 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
       "Orangi Zahoor Chowk 11½ · No.5 · Banaras · Habib Bank · Nazimabad 2 · Petrol Pump · Liaqatabad 4 · No.10 · Ghareebabad · Hasan Square · National Stadium · Karsaz · Drigh Road · Natha Khan · Airport · Kala Board · Lal Masjid · Tanki · Saoodabad · Khokhrapar",
   },
   {
-    code: "Sheraz",
+    code: "Shiraz",
     category: "named_route",
     stops:
-      "Malir Cantt · Race Course · Saforah Goth · Mosmiat · University · Safari Park · NIPA · Urdu College · Hasan Square · Askari Park · Jail Chorangi · Islamia College · Numaish · Taj Complex · Plaza · Jama Cloth · Light House · City Court · Boulton Market · Tower · Kharadar · IC · Agrah Taj · Machar Colony · Gulbai · Truck Adda · Mauripur Graks · Mauripur Village · 500 Quarters · Musharaf Colony",
+      "Malir Cantt · Race Course · Saforah Goth · Mosmiat · Karachi University (KU) · NED University · Safari Park · NIPA · Urdu College · Hasan Square · Askari Park · Jail Chorangi · Islamia College · Numaish · Taj Complex · Plaza · Jama Cloth · Light House · City Court · Boulton Market · Tower · Kharadar · IC · Agrah Taj · Machar Colony · Gulbai · Truck Adda · Mauripur Graks · Mauripur Village · 500 Quarters · Musharaf Colony",
   },
   {
     code: "MashAllah",
@@ -402,6 +421,24 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
       "Power House · UP Mor · Nagan Chorangi · Shafiq Mor · Sohrab Goth · Water Pump · Ayesha Manzil · Karimabad · Liaqatabad 10 · Laloo Khait · Teen Hati · Jehangir Road · Numaish · Mobile Market · Urdu Bazar · Civil Hospital · City Court · Light House · Bolton Market · Tower · Keemari",
   },
   {
+    code: "R-5",
+    category: "red_bus",
+    stops:
+      "Surjani · New Karachi · Shafiq Mor · Ziauddin Chowrangi · KDA Chowrangi · Mosa Colony · Mangopir · Site Area · Gulbai · Masroor",
+  },
+  {
+    code: "R-6",
+    category: "red_bus",
+    stops:
+      "Gulshan-e-Bihar Orangi Town · Orangi Town · Banaras · Paposh Nagar · Site Area · Golimar · Garden · PIB · Jail Road · Bahadurabad · Baloch Colony · Mehmoodabad · Manzoor Colony · DHA Phase 1 · Shan Chowrangi · Bilal Chowrangi · Singer Chowrangi",
+  },
+  {
+    code: "R-7",
+    category: "red_bus",
+    stops:
+      "Mosamiyat · Dow University · Suparco · Gulzar-e-Hijri · Abdul Hasphani · Gulshan-e-Iqbal · Muqa Chowk · Shepowner · Kati Pahari · Orangi · Gulshan-e-Ghazi G7 Stop",
+  },
+  {
     code: "R-8",
     category: "red_bus",
     stops:
@@ -496,15 +533,80 @@ const raw: Array<{ code: string; category: RouteCategory; stops: string }> = [
     stops:
       "Model Colony · Malir Halt · Colony Gate · Nata Khan Bridge · Drigh Road Station · PAF Base Faisal · Laal Kothi · Karsaz · Nursery · FTC · Regent Plaza · Metropole · Fawwara Chowk · Arts Council · Shaheen Complex · I.I. Chundrigar · Tower",
   },
-
 ];
+
+// Community corrections supplied by the project owner. Stop sequences are not GPS surveys.
+const imranStops =
+  "Model Colony · Malir Halt · Wireless Gate · Chota Gate · Colony Gate · Natha Khan · Drigh Road · Karsaz · Awami Markaz · Baloch Colony · Nursery · Tariq Road · Noorani Kabab · Numaish · Taj Complex · Jama Cloth · Light House · Golden Market · Tower · Agra Taj Colony · Gulbai · Truck Adda · Pakistan Marine Academy · Yunus Abad · Machli Chowk";
+raw.push({ code: "Imran", category: "mini_bus", stops: imranStops });
+raw.push({
+  code: "G-27 (NED connection)",
+  category: "mini_bus",
+  stops: "NIPA Chorangi · NED University",
+});
 
 export const ROUTES: BusRoute[] = raw.map((r) => ({
   code: r.code,
   slug: slugify(r.code),
   category: r.category,
   stops: s(r.stops),
+  bidirectional: true,
+  dataNote:
+    r.code.includes("segment") || r.code.includes("connection")
+      ? "Community-reported NIPA–NED segment only; this is not the complete service route."
+      : undefined,
 }));
+
+// Community-supplied downtown order, reversible with the rest of each route.
+const downtown = [
+  "Shaheen Complex",
+  "Arts Council",
+  "Press Club",
+  "Governor House",
+  "Zainab Market",
+  "Avari Tower",
+  "Mehran Hotel",
+];
+for (const route of ROUTES) {
+  if (!["Muslim", "R-1", "R-9", "Ilyas", "N-5"].includes(route.code)) continue;
+  const backward = ["R-1", "R-9"].includes(route.code);
+  const anchor = route.stops.indexOf(backward ? "Arts Council" : "Shaheen Complex");
+  const pidc = route.stops.indexOf("PIDC");
+  if (anchor >= 0 || pidc >= 0) {
+    const insertion = anchor >= 0 ? anchor : pidc + 1;
+    const preceding = route.stops.slice(0, insertion).filter((stop) => !downtown.includes(stop));
+    const following = route.stops.slice(insertion).filter((stop) => !downtown.includes(stop));
+    route.stops = [...preceding, ...(backward ? [...downtown].reverse() : downtown), ...following];
+    route.dataNote =
+      "Community-reported downtown stop order, including nearby Governor House. Confirm exact boarding locations and direction locally; not a GPS-verified sequence.";
+  }
+}
+// Owner-reported boarding connection: N-5 serves Metropole. Keep it explicit,
+// rather than merging distinct downtown stops or inventing a walking distance.
+const n5Metropole = ROUTES.find((route) => route.code === "N-5");
+if (n5Metropole && !n5Metropole.stops.includes("Metropole")) {
+  const at = n5Metropole.stops.indexOf("Mehran Hotel");
+  n5Metropole.stops.splice(at >= 0 ? at + 1 : n5Metropole.stops.indexOf("PIDC"), 0, "Metropole");
+  n5Metropole.dataNote =
+    "Community-reported downtown sequence and N-5 Metropole boarding connection. Confirm the stop and direction locally.";
+}
+
+// Owner instruction: Pink services mirror the same numbered Red Bus stop data.
+// Keep independent copies so later edits to one fleet cannot mutate the other.
+for (const number of [1, 2, 3, 9, 10]) {
+  const red = ROUTES.find((route) => route.category === "red_bus" && route.code === `R-${number}`);
+  if (!red) continue;
+  ROUTES.push({
+    code: `R-${number}`,
+    slug: `pink-r${number}`,
+    category: "pink_bus",
+    stops: [...red.stops],
+    bidirectional: red.bidirectional ?? true,
+    planningEnabled: true,
+    dataNote:
+      "Women-only service. Stop sequence copied from the same-numbered Red Bus route as instructed by the project owner; confirm current service and boarding points locally.",
+  });
+}
 
 export interface AreaEntry {
   name: string;
@@ -515,7 +617,7 @@ export interface AreaEntry {
 // Normalize stop-name variants so e.g. "Nagan Chorangi" (Red Bus) and
 // "Nagan Chorangi Station" (BRT) resolve to ONE area listing every category.
 const areaKey = (stop: string) =>
-  stop
+  canonicalPlace(stop)
     .toLowerCase()
     .replace(/\s+station$/, "")
     .replace(/\s+terminal$/, "")
@@ -542,11 +644,20 @@ for (const route of ROUTES) {
 }
 
 export const AREAS: AreaEntry[] = Array.from(areaMap.values())
-  .map((a) => ({ name: a.name, slug: slugify(a.name), routes: a.routes }))
+  .map((a) => ({
+    name: a.name === "Korangi 6" ? "No. 6" : a.name,
+    slug: a.name === "Korangi 6" ? "no-6" : slugify(a.name),
+    routes: a.routes,
+  }))
   .sort((a, b) => a.name.localeCompare(b.name));
 
 export const getRoute = (slug: string) => ROUTES.find((r) => r.slug === slug);
-export const getArea = (slug: string) => AREAS.find((a) => a.slug === slug);
+export const getArea = (slug: string) => {
+  const exact = AREAS.find((a) => a.slug === slug);
+  if (exact) return exact;
+  const original = ROUTES.flatMap((r) => r.stops).find((stop) => slugify(stop) === slug);
+  return original ? AREAS.find((a) => areaKey(a.name) === areaKey(original)) : undefined;
+};
 
 export const POPULAR_AREAS = [
   "Gulshan Chorangi",
@@ -565,7 +676,7 @@ export const POPULAR_AREAS = [
 
 /** Simple typo-tolerant scoring for local spelling variants. */
 export function normalize(v: string) {
-  return v
+  return canonicalPlace(v)
     .toLowerCase()
     .replace(/[^a-z0-9 ]/g, " ")
     .replace(/\b(chorangi|chowrangi|chorangy|chowrangy)\b/g, "chorangi")
@@ -577,7 +688,8 @@ export function normalize(v: string) {
     .replace(/ee/g, "i")
     .replace(/aa/g, "a")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    .replace(/^([a-z]{1,3}) (\d+)$/, "$1$2");
 }
 
 export function scoreMatch(target: string, query: string): number {

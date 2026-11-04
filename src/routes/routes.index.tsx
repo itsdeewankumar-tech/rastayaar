@@ -1,3 +1,5 @@
+import { useLanguage } from "@/components/language";
+import { T } from "@/components/language";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
@@ -11,11 +13,7 @@ import { RouteCard } from "@/components/site-chrome";
 
 type Search = { type?: RouteCategory | "local_bus" };
 
-const LOCAL_BUS_CATEGORIES: RouteCategory[] = [
-  "mini_bus",
-  "coach",
-  "named_route",
-];
+const LOCAL_BUS_CATEGORIES: RouteCategory[] = ["mini_bus", "coach", "named_route"];
 
 export const Route = createFileRoute("/routes/")({
   validateSearch: (search: Record<string, unknown>): Search => {
@@ -44,6 +42,7 @@ export const Route = createFileRoute("/routes/")({
 });
 
 function RoutesIndex() {
+  const { t, place, language } = useLanguage();
   const { type } = Route.useSearch();
   const [q, setQ] = useState("");
 
@@ -70,15 +69,16 @@ function RoutesIndex() {
     return items;
   }, [type, q]);
 
-  const selectedLabel = type === "local_bus"
-    ? "Local Bus (Mini Bus & Coach)"
-    : type
-      ? CATEGORY_META[type].label
-      : "All bus routes";
+  const selectedLabel =
+    type === "local_bus"
+      ? "Local Bus (Mini Bus & Coach)"
+      : type
+        ? CATEGORY_META[type].label
+        : "All bus routes";
 
   return (
     <div className="container-page py-12">
-      <h1 className="font-display text-4xl font-bold text-ink">{selectedLabel}</h1>
+      <h1 className="font-display text-4xl font-bold text-ink">{t(selectedLabel)}</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
         {type === "local_bus"
           ? `${list.length} routes across mini buses, coaches, and named fleets.`
@@ -93,16 +93,20 @@ function RoutesIndex() {
             !type ? "border-primary bg-primary text-primary-foreground" : "border-border bg-surface"
           }`}
         >
-          All
+          {""}
+          <T>{"All"}</T>{" "}
         </Link>
         <Link
           to="/routes"
           search={{ type: "local_bus" }}
           className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
-            type === "local_bus" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-surface hover:border-primary"
+            type === "local_bus"
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-surface hover:border-primary"
           }`}
         >
-          Local Bus (Mini Bus & Coach)
+          {""}
+          <T>{"Local Bus (Mini Bus & Coach)"}</T>{" "}
         </Link>
         {CATEGORY_ORDER.filter((c) => !LOCAL_BUS_CATEGORIES.includes(c)).map((c) => (
           <Link
@@ -115,7 +119,7 @@ function RoutesIndex() {
                 : "border-border bg-surface hover:border-primary"
             }`}
           >
-            {CATEGORY_META[c].label}
+            {t(CATEGORY_META[c].label)}
           </Link>
         ))}
       </div>
@@ -123,7 +127,7 @@ function RoutesIndex() {
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Filter by bus number or stop…"
+        placeholder={t("Filter by bus number or stop…")}
         className="mt-5 w-full max-w-md rounded-xl border border-border bg-surface px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-ring/30"
       />
 
@@ -133,7 +137,11 @@ function RoutesIndex() {
         ))}
       </div>
       {list.length === 0 && (
-        <p className="mt-10 text-muted-foreground">No routes matched that filter.</p>
+        <p className="mt-10 text-muted-foreground">
+          {""}
+          <T>{"No routes matched that filter."}</T>
+          {""}
+        </p>
       )}
     </div>
   );

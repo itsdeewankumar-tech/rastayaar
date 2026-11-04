@@ -16,6 +16,7 @@ import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaresRouteImport } from './routes/fares'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SavedRouteImport } from './routes/saved'
 import { Route as AreasIndexRouteImport } from './routes/areas.index'
 import { Route as AreasSlugRouteImport } from './routes/areas.$slug'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -58,6 +59,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreasIndexRoute = AreasIndexRouteImport.update({
   id: '/areas/',
   path: '/areas/',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/fares': typeof FaresRoute
   '/plan': typeof PlanRoute
   '/privacy': typeof PrivacyRoute
+  '/saved': typeof SavedRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/fares': typeof FaresRoute
   '/plan': typeof PlanRoute
   '/privacy': typeof PrivacyRoute
+  '/saved': typeof SavedRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/fares': typeof FaresRoute
   '/plan': typeof PlanRoute
   '/privacy': typeof PrivacyRoute
+  '/saved': typeof SavedRoute
   '/areas/$slug': typeof AreasSlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/fares'
     | '/plan'
     | '/privacy'
+    | '/saved'
     | '/areas/$slug'
     | '/blog/$slug'
     | '/routes/$slug'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/fares'
     | '/plan'
     | '/privacy'
+    | '/saved'
     | '/areas/$slug'
     | '/blog/$slug'
     | '/routes/$slug'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/fares'
     | '/plan'
     | '/privacy'
+    | '/saved'
     | '/areas/$slug'
     | '/blog/$slug'
     | '/routes/$slug'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   FaresRoute: typeof FaresRoute
   PlanRoute: typeof PlanRoute
   PrivacyRoute: typeof PrivacyRoute
+  SavedRoute: typeof SavedRoute
   AreasSlugRoute: typeof AreasSlugRoute
   BlogSlugRoute: typeof BlogSlugRoute
   RoutesSlugRoute: typeof RoutesSlugRoute
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/areas/': {
       id: '/areas/'
       path: '/areas'
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaresRoute: FaresRoute,
   PlanRoute: PlanRoute,
   PrivacyRoute: PrivacyRoute,
+  SavedRoute: SavedRoute,
   AreasSlugRoute: AreasSlugRoute,
   BlogSlugRoute: BlogSlugRoute,
   RoutesSlugRoute: RoutesSlugRoute,

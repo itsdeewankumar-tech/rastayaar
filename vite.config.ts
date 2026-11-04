@@ -1,4 +1,4 @@
-import { fileURLToPath } from "node:url";
+﻿import { fileURLToPath } from "node:url";
 
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import tailwindcss from "@tailwindcss/vite";
