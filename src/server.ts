@@ -1,3 +1,5 @@
+import { feedback } from "./lib/feedback.server";
+import { liveServices } from "./lib/live-services.server";
 import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
@@ -46,6 +48,9 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    if (new URL(request.url).pathname === "/api/feedback") return feedback(request);
+    if (["/api/transport/search", "/api/transport/walk"].includes(new URL(request.url).pathname))
+      return liveServices(request);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);

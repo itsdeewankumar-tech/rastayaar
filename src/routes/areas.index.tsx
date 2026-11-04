@@ -1,3 +1,5 @@
+import { useLanguage } from "@/components/language";
+import { T } from "@/components/language";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AREAS, CATEGORY_META, scoreMatch } from "@/data/routes";
@@ -22,6 +24,7 @@ export const Route = createFileRoute("/areas/")({
 });
 
 function AreasIndex() {
+  const { t, place, language } = useLanguage();
   const [q, setQ] = useState("");
 
   const grouped = useMemo(() => {
@@ -37,15 +40,20 @@ function AreasIndex() {
 
   return (
     <div className="container-page py-12">
-      <h1 className="font-display text-4xl font-bold text-ink">Areas & stops</h1>
+      <h1 className="font-display text-4xl font-bold text-ink">
+        {""}
+        <T>{"Areas & stops"}</T>
+        {""}
+      </h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">
-        {AREAS.length} areas, chowrangis, landmarks and stations across Karachi.
+        {AREAS.length} {""}
+        <T>{"areas, chowrangis, landmarks and stations across Karachi."}</T>{" "}
       </p>
 
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Search an area — Sultanabad, Korangi, Banaras…"
+        placeholder={t("Search an area — Sultanabad, Korangi, Banaras…")}
         className="mt-6 w-full max-w-md rounded-xl border border-border bg-surface px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-ring/30"
       />
 
@@ -63,7 +71,7 @@ function AreasIndex() {
                   params={{ slug: a.slug }}
                   className="surface-card hover-lift flex items-center justify-between gap-3 px-4 py-3"
                 >
-                  <span className="text-sm font-medium text-ink">{a.name}</span>
+                  <span className="text-sm font-medium text-ink">{place(a.name)}</span>
                   <span className="flex -space-x-1">
                     {a.routes.slice(0, 3).map((r) => (
                       <span
@@ -81,7 +89,11 @@ function AreasIndex() {
         ))}
       </div>
       {grouped.length === 0 && (
-        <p className="mt-10 text-muted-foreground">No area matched that search.</p>
+        <p className="mt-10 text-muted-foreground">
+          {""}
+          <T>{"No area matched that search."}</T>
+          {""}
+        </p>
       )}
     </div>
   );
