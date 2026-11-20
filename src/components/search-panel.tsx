@@ -4,6 +4,7 @@ import { useLanguage } from "./language";
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ROUTES, AREAS, CATEGORY_META, POPULAR_AREAS, scoreMatch, slugify } from "@/data/routes";
+import { canonicalPlace } from "@/data/places";
 import { CategoryBadge } from "@/components/site-chrome";
 
 export function SearchPanel() {
@@ -26,8 +27,53 @@ export function SearchPanel() {
       .slice(0, 6);
   }, [query]);
 
+  const destinationRouteResults = useMemo(() => {
+    if (query.trim().length < 2) return [];
+    const destination = canonicalPlace(query);
+    const isSachal = destination === "sachal goth";
+    const isIba = destination === "iba";
+
+    return ROUTES.map((route) => {
+      const stop = route.stops.find((item) => canonicalPlace(item) === destination);
+
+      const nearbySachalStop =
+        isSachal && ["G-7", "Shiraz"].includes(route.code) ? "Mosmiat" : undefined;
+
+      const nearbyIbaStop = isIba && route.code === "A-3" ? "Maskan" : undefined;
+
+      return {
+        route,
+        stop: stop ?? nearbySachalStop ?? nearbyIbaStop,
+        isNearbyIbaStop: Boolean(nearbyIbaStop),
+      };
+    })
+      .filter((item) => item.stop)
+      .filter(
+        (item, index, all) =>
+          all.findIndex((other) => other.route.slug === item.route.slug) === index,
+      )
+      .sort((a, b) => {
+        const preferred = (code: string) =>
+          destination === "ned university" || destination === "karachi university ku"
+            ? code === "Shiraz"
+              ? 0
+              : 1
+            : isSachal
+              ? ["G-3", "G-7", "Shiraz"].includes(code)
+                ? 0
+                : 1
+              : 0;
+        return preferred(a.route.code) - preferred(b.route.code);
+      })
+      .slice(0, 8);
+  }, [query]);
+
   const hasQuery = query.trim().length > 0;
-  const empty = hasQuery && areaResults.length === 0 && routeResults.length === 0;
+  const empty =
+    hasQuery &&
+    areaResults.length === 0 &&
+    routeResults.length === 0 &&
+    destinationRouteResults.length === 0;
 
   return (
     <div className="surface-card p-5">
@@ -99,6 +145,46 @@ export function SearchPanel() {
       )}
 
       {empty && <ExternalSearch key={query + language} query={query} />}
+
+      {destinationRouteResults.length > 0 && (
+        <div className="mt-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("Buses serving this destination")}
+          </p>
+          <div className="mt-2 space-y-2">
+            {destinationRouteResults.map(({ route, stop, isNearbyIbaStop }) => (
+              <Link
+                key={`destination-${route.slug}`}
+                to="/routes/$slug"
+                params={{ slug: route.slug }}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface px-3 py-2.5 transition-colors hover:border-primary"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="rounded-md bg-primary px-2 py-1 text-xs font-bold text-primary-foreground">
+                    {route.code}
+                  </span>
+                  <span>
+                    <span className="block text-sm font-medium text-ink">{place(stop)}</span>
+                    {isNearbyIbaStop && (
+                      <span className="block text-xs text-muted-foreground">
+                        {t("Nearby stop for IBA Karachi")}
+                      </span>
+                    )}
+                  </span>
+                </span>
+                <span className="text-xs text-muted-foreground">{t("View stops")}</span>
+              </Link>
+            ))}
+          </div>
+          {canonicalPlace(query) === "sachal goth" && (
+            <p className="mt-2 text-xs leading-5 text-muted-foreground">
+              {t(
+                "G-3 lists Sachal Goth directly; G-7 and Shiraz have a nearby listed stop at Mosmiat.",
+              )}
+            </p>
+          )}
+        </div>
+      )}
 
       {routeResults.length > 0 && (
         <div className="mt-4">

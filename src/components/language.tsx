@@ -45,6 +45,14 @@ const URDU: Record<string, string> = {
   Clear: "صاف کریں",
   "Popular areas": "مشہور علاقے",
   "Bus numbers": "بس نمبر",
+  "Open menu": "مینو کھولیں",
+  "Close menu": "مینو بند کریں",
+  "Mobile navigation": "موبائل نیویگیشن",
+  "Buses serving this destination": "اس منزل تک جانے والی بسیں",
+  "View stops": "اسٹاپ دیکھیں",
+  "Nearby stop for IBA Karachi": "آئی بی اے کراچی کے لیے قریبی بس اسٹاپ",
+  "G-3 lists Sachal Goth directly; G-7 and Shiraz have a nearby listed stop at Mosmiat.":
+    "G-3 میں سچل گوٹھ براہِ راست درج ہے؛ G-7 کا قریب ترین درج شدہ اسٹاپ موسمیات ہے۔",
   "Search a Karachi area or bus number": "کراچی کا علاقہ یا بس نمبر تلاش کریں",
   "Type an area — e.g. Sultanabad, Nagan Chorangi, Tower…":
     "علاقہ لکھیں — مثلاً سلطان آباد، ناگن چورنگی، ٹاور…",

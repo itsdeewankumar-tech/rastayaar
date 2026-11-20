@@ -653,9 +653,17 @@ export const AREAS: AreaEntry[] = Array.from(areaMap.values())
 
 export const getRoute = (slug: string) => ROUTES.find((r) => r.slug === slug);
 export const getArea = (slug: string) => {
-  const exact = AREAS.find((a) => a.slug === slug);
+  const legacySlugs: Record<string, string> = {
+    "karachi-university-ku": "karachi-university",
+    mosamiyat: "mosmiat",
+  };
+
+  const canonicalSlug = legacySlugs[slug] ?? slug;
+  const exact = AREAS.find((a) => a.slug === canonicalSlug);
   if (exact) return exact;
-  const original = ROUTES.flatMap((r) => r.stops).find((stop) => slugify(stop) === slug);
+
+  const original = ROUTES.flatMap((r) => r.stops).find((stop) => slugify(stop) === canonicalSlug);
+
   return original ? AREAS.find((a) => areaKey(a.name) === areaKey(original)) : undefined;
 };
 

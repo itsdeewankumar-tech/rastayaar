@@ -4,7 +4,8 @@ import footerFacebookIcon from "@/assets/facebook-footer-icon.png";
 import { T } from "@/components/language";
 import { useLanguage } from "./language";
 import { Link } from "@tanstack/react-router";
-import { Mail, Bookmark } from "lucide-react";
+import { Mail, Bookmark, Menu, X } from "lucide-react";
+import { useState } from "react";
 import { CATEGORY_META, type RouteCategory, type BusRoute } from "@/data/routes";
 import logoUrl from "@/assets/rastayaar-logo-v2.png";
 
@@ -24,6 +25,7 @@ const NAV = [
 
 export function SiteHeader() {
   const { t, language, setLanguage } = useLanguage();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/85 backdrop-blur-md">
       <div className="h-1 truck-stripe" />
@@ -44,14 +46,30 @@ export function SiteHeader() {
             {""}
           </span>
         </Link>
-        <button
-          type="button"
-          onClick={() => setLanguage(language === "en" ? "ur" : "en")}
-          aria-label="Switch language / زبان تبدیل کریں"
-          className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-primary/25 bg-secondary/60 px-4 py-1.5 text-lg font-semibold text-primary"
-        >
-          {language === "en" ? "اردو" : "English"}
-        </button>
+        <div className="header-tools flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setLanguage(language === "en" ? "ur" : "en")}
+            aria-label="Switch language / زبان تبدیل کریں"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-primary/25 bg-secondary/60 px-4 py-1.5 text-lg font-semibold text-primary"
+          >
+            {language === "en" ? "اردو" : "English"}
+          </button>
+          <button
+            type="button"
+            className="mobile-menu-toggle inline-flex size-11 items-center justify-center rounded-xl border border-border bg-surface text-ink"
+            aria-label={mobileMenuOpen ? t("Close menu") : t("Open menu")}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-site-navigation"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+          >
+            {mobileMenuOpen ? (
+              <X aria-hidden="true" className="size-6" />
+            ) : (
+              <Menu aria-hidden="true" className="size-6" />
+            )}
+          </button>
+        </div>
         <nav
           aria-label={t("Main navigation")}
           className="main-nav flex min-w-0 flex-1 items-center justify-center gap-1 overflow-x-auto text-base font-medium lg:text-lg"
@@ -78,6 +96,71 @@ export function SiteHeader() {
           {t("Save Bus")}
         </Link>
       </div>
+      {mobileMenuOpen && (
+        <nav
+          id="mobile-site-navigation"
+          aria-label={t("Mobile navigation")}
+          className="mobile-site-navigation border-t border-border bg-surface px-4 py-4 shadow-lg"
+        >
+          <div className="mx-auto max-w-7xl space-y-4">
+            <section aria-label={t("Travel")}>
+              <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                {t("Travel")}
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {NAV.filter((item) =>
+                  ["/", "/plan", "/routes", "/areas", "/fares"].includes(item.to),
+                ).map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    activeOptions={{ exact: item.to === "/" }}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex min-h-11 items-center rounded-xl border border-border/70 px-3 py-2 text-sm font-semibold text-ink transition-colors hover:bg-secondary"
+                    activeProps={{
+                      className:
+                        "border-primary bg-primary text-primary-foreground hover:bg-primary",
+                    }}
+                  >
+                    {t(item.label)}
+                  </Link>
+                ))}
+              </div>
+            </section>
+            <section aria-label={t("More from RastaYaar")}>
+              <p className="mb-2 px-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                {t("More from RastaYaar")}
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {NAV.filter((item) => ["/blog", "/about", "/contact"].includes(item.to)).map(
+                  (item) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex min-h-11 items-center rounded-xl border border-border/70 px-3 py-2 text-sm font-semibold text-ink transition-colors hover:bg-secondary"
+                      activeProps={{
+                        className:
+                          "border-primary bg-primary text-primary-foreground hover:bg-primary",
+                      }}
+                    >
+                      {t(item.label)}
+                    </Link>
+                  ),
+                )}
+                <Link
+                  to="/saved"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  <Bookmark aria-hidden="true" className="size-4" />
+                  {t("Save Bus")}
+                </Link>
+              </div>
+            </section>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
