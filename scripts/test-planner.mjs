@@ -41,6 +41,19 @@ check("CBM / IoBM consistent in search and planner", () => {
   );
   assert(AREAS.some((a) => scoreMatch(a.name, "IoBM") === 100));
 });
+check("IBA Karachi resolves to nearby A-3 stop at Maskan", () => {
+  const plans = planTrip("New Sabzi Mandi", "IBA Karachi");
+
+  assert(
+    plans.some(
+      (p) =>
+        p.changes === 0 &&
+        p.legs.length === 1 &&
+        p.legs[0].route.code === "A-3" &&
+        p.legs[0].to === "Maskan",
+    ),
+  );
+});
 check("Urdu origin and destination aliases", () =>
   assert(planTrip("گلبرگ", "نیپا").some((p) => p.legs[0].route.code === "F-11" && p.changes === 0)),
 );

@@ -90,8 +90,23 @@ export function planTrip(
   const routes = ROUTES.filter(
     (r) => r.planningEnabled !== false && (r.category !== "pink_bus" || options.includeWomenOnly),
   );
-  const starts = routes.filter((r) => index(r, from) >= 0);
-  const ends = routes.filter((r) => index(r, to) >= 0);
+  const sachalOrigin = canonicalPlace(from) === "sachal goth";
+  const sachalDestination = canonicalPlace(to) === "sachal goth";
+  const routePlace = (route: BusRoute, place: string) => {
+    const canonical = canonicalPlace(place);
+
+    if (canonical === "sachal goth" && ["G-7", "Shiraz"].includes(route.code)) {
+      return "Mosmiat";
+    }
+
+    if (canonical === "iba" && route.code === "A-3") {
+      return "Maskan";
+    }
+
+    return place;
+  };
+  const starts = routes.filter((r) => index(r, routePlace(r, from)) >= 0);
+  const ends = routes.filter((r) => index(r, routePlace(r, to)) >= 0);
   const bestByServices = new Map<string, TripPlan>();
   const save = (legs: PlanLeg[]) => {
     // Reject circles: repeated interchanges and travel back over an earlier stop.
@@ -132,7 +147,7 @@ export function planTrip(
 
     if (legCache.has(key)) return legCache.get(key)!;
 
-    const stops = segment(r, a, b);
+    const stops = segment(r, routePlace(r, a), routePlace(r, b));
     const result: PlanLeg | null = stops.length
       ? {
           route: r,
@@ -197,5 +212,29 @@ export function planTrip(
     preference === "balanced" || preference === "fewest-transfers"
       ? viable.filter((plan) => plan.changes === minimumChanges)
       : viable;
-  return rankPlans(practical, preference).slice(0, Math.max(1, Math.min(limit, 100)));
+  // Keep the requested Sachal Goth services visible. G-3 lists Sachal Goth;
+  // G-7 and Shiraz reach the nearby listed Mosmiat stop.
+  const sachalOptions =
+    sachalOrigin || sachalDestination
+      ? results.filter(
+          (plan) =>
+            plan.legs.length === 1 && ["G-3", "G-7", "Shiraz"].includes(plan.legs[0]!.route.code),
+        )
+      : [];
+  const ranked = rankPlans([...practical, ...sachalOptions], preference);
+  // Keep Shiraz visible for university-bound journeys even when another recorded
+  // service has a slightly shorter stop count. The route data records KU, NED,
+  // NIPA and Tower on this single service.
+  const universityTarget = ["ned university", "karachi university ku"].includes(canonicalPlace(to));
+  const universityOrigin = ["ned university", "karachi university ku"].includes(
+    canonicalPlace(from),
+  );
+  if (universityTarget || universityOrigin) {
+    ranked.sort((a, b) => {
+      const aShiraz = a.legs.some((leg) => leg.route.code === "Shiraz") ? 0 : 1;
+      const bShiraz = b.legs.some((leg) => leg.route.code === "Shiraz") ? 0 : 1;
+      return aShiraz - bShiraz;
+    });
+  }
+  return ranked.slice(0, Math.max(1, Math.min(limit, 100)));
 }
